@@ -1,31 +1,31 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	_ "github.com/go-sql-driver/mysql"
 )
 
-type album struct {
-	ID     string  `json:"id"`
-	Title  string  `json:"title"`
-	Artist string  `json:"artist"`
-	Price  float64 `json:"price"`
-}
-
-var albums = []album{
-	{ID: "1", Title: "Blue Train", Artist: "John Coltrane", Price: 56.99},
-	{ID: "2", Title: "Jeru", Artist: "Gerry Mulligan", Price: 17.99},
-	{ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99},
-}
-
 func main() {
+	db, err := sql.Open("mysql", "root:pwd@tcp(127.0.0.1:3306)/gotest")
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	defer db.Close()
+	var name string
+	err = db.QueryRow("SELECT title FROM topic ").Scan(&name)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(name)
 	r := gin.Default()
-	r.POST("/api/test", getAlbums)
+	r.POST("/api/test", func(c *gin.Context) {
+		c.JSON(http.StatusOK, name)
+	})
 	r.Run()
-}
-
-func getAlbums(c *gin.Context) {
-	c.JSON(http.StatusOK, albums)
 }
