@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"kilhyun-kim/released-back/crawler"
 	"log"
 	"net/http"
 
@@ -11,6 +12,11 @@ import (
 )
 
 func main() {
+
+	go func() {
+		crawler.Crawler()
+	}()
+
 	db, err := sql.Open("mysql", "root:pwd@tcp(127.0.0.1:3306)/gotest")
 	if err != nil {
 		log.Fatal(err)
