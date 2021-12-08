@@ -3,8 +3,15 @@ package rest
 import "github.com/gin-gonic/gin"
 
 func RunAPI(address string) error {
+	h, err := NewHandler()
+	if err != nil {
+		return err
+	}
+	return RunAPIWithHandler(address, h)
+}
+
+func RunAPIWithHandler(address string, h HandlerInterface) error {
 	r := gin.Default()
-	h, _ := NewHandler()
 
 	// 기술 전체 조회
 	r.GET("/techs", h.GetAllTech)
@@ -14,6 +21,12 @@ func RunAPI(address string) error {
 
 	// })
 
+	// commentGroup := r.Group("/comment")
+	// {
+	// 	commentGroup.POST("/comment/register")
+	// 	commentGroup.POST("/comment/register")
+	// 	commentGroup.POST("/comment/register")
+	// }
 	// r.POST("/comment/register", func(c *gin.Context) {
 
 	// })
@@ -24,5 +37,5 @@ func RunAPI(address string) error {
 	// r.POST("/comment/update", func(c *gin.Context) {
 
 	// })
-
+	return r.Run(address)
 }
