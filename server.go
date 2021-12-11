@@ -13,7 +13,7 @@ func main() {
 	// 	crawler.Crawler()
 	// }()
 
-	// db, err := sql.Open("mysql", "root:pwd@tcp(127.0.0.1:3306)/gotest")
+	// db, err := sql.Open("mysql", "root:111111@tcp(127.0.0.1:3306)/gotest")
 	// if err != nil {
 	// 	log.Fatal(err)
 	// }

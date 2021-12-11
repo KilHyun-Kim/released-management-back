@@ -1,6 +1,10 @@
 package rest
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
 
 func RunAPI(address string) error {
 	h, err := NewHandler()
@@ -14,7 +18,7 @@ func RunAPIWithHandler(address string, h HandlerInterface) error {
 	r := gin.Default()
 
 	// 기술 전체 조회
-	r.GET("/techs", h.GetAllTech)
+	r.GET("/techs", h.GetTech)
 
 	// 특정 기술 조회
 	// r.GET("/tech/:id", func(c *gin.Context) {
@@ -38,4 +42,23 @@ func RunAPIWithHandler(address string, h HandlerInterface) error {
 
 	// })
 	return r.Run(address)
+}
+
+func MyCustomMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("v", "123")
+
+		c.Next()
+
+		status := c.Writer.Status()
+		fmt.Println(status)
+	}
+}
+
+func MyCustomLogger() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		fmt.Println("******************")
+		c.Next()
+		fmt.Println("******************")
+	}
 }
