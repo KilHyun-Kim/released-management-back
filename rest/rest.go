@@ -19,9 +19,9 @@ func RunAPIWithHandler(address string, h HandlerInterface) error {
 
 	// 기술 전체 조회
 	r.GET("/techs", h.GetTech)
-
 	// 특정 기술 조회
-	// r.GET("/tech/:id", func(c *gin.Context) {
+	r.GET("/version/:id", h.FindVersion)
+	// r.GET("/version/:id", func(c *gin.Context) {
 
 	// })
 
